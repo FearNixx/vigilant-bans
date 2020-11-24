@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="de.fearnixx.lolbanpick.config.ConfigFX"
+            prefHeight="400.0" prefWidth="600.0"
+>
+    <VBox AnchorPane.topAnchor="0.0">
+        <HBox>
+            <CheckBox fx:id="cbScoreEnabled" text="Enable Scores"/>
+            <CheckBox fx:id="cbSpellsEnabled" text="Enable Spells"/>
+            <CheckBox fx:id="cbCoachesEnabled" text="Enable Coaches"/>
+        </HBox>
+        <HBox>
+            <GridPane styleClass="teamConfig, blueTeam">
+                <padding>
+                    <Insets top="5" right="5" bottom="5" left="5"/>
+                </padding>
+                <TextField text="Score"
+                           fx:id="blueScore"
+                           GridPane.columnIndex="0" GridPane.columnSpan="1"
+                           GridPane.rowIndex="0"
+                />
+                <TextField text="Team Name"
+                           fx:id="blueName"
+                           GridPane.columnIndex="0" GridPane.columnSpan="3"
+                           GridPane.rowIndex="1"
+                />
+                <TextField text="Coach Name"
+                           fx:id="blueCoach"
+                           GridPane.columnIndex="0" GridPane.columnSpan="3"
+                           GridPane.rowIndex="2"
+                />
+                <TextField text="R" fx:id="blueRGB1"
+                           GridPane.columnIndex="0" GridPane.columnSpan="1"
+                           GridPane.rowIndex="3"
+                />
+                <TextField text="G" fx:id="blueRGB2"
+                           GridPane.columnIndex="1" GridPane.columnSpan="1"
+                           GridPane.rowIndex="3"
+                />
+                <TextField text="B" fx:id="blueRGB3"
+                           GridPane.columnIndex="2" GridPane.columnSpan="1"
+                           GridPane.rowIndex="3"
+                />
+            </GridPane>
+            <GridPane styleClass="teamConfig, redTeam" alignment="center">
+                <padding>
+                    <Insets top="5" right="5" bottom="5" left="5"/>
+                </padding>
+                <TextField text="Score"
+                           fx:id="redScore"
+                           GridPane.columnIndex="0" GridPane.columnSpan="1"
+                           GridPane.rowIndex="0"
+                />
+                <TextField text="Team Name"
+                           fx:id="redName"
+                           GridPane.columnIndex="0" GridPane.columnSpan="3"
+                           GridPane.rowIndex="1"
+                />
+                <TextField text="Coach Name"
+                           fx:id="redCoach"
+                           GridPane.columnIndex="0" GridPane.columnSpan="3"
+                           GridPane.rowIndex="2"
+                />
+                <TextField text="R" fx:id="redRGB1"
+                           GridPane.columnIndex="0" GridPane.columnSpan="1"
+                           GridPane.rowIndex="3"
+                />
+                <TextField text="G" fx:id="redRGB2"
+                           GridPane.columnIndex="1" GridPane.columnSpan="1"
+                           GridPane.rowIndex="3"
+                />
+                <TextField text="B" fx:id="redRGB3"
+                           GridPane.columnIndex="2" GridPane.columnSpan="1"
+                           GridPane.rowIndex="3"
+                />
+            </GridPane>
+        </HBox>
+        <Button text="Save &amp; Close"
+                fx:id="saveAndCloseBtn"
+                onAction="#saveAndClose"
+        />
+    </VBox>
+    <stylesheets>
+        <URL value="@config.css" />
+    </stylesheets>
+</AnchorPane>

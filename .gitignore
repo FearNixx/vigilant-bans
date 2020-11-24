@@ -1,0 +1,10 @@
+## IDE Files ##
+.idea/
+*.iml
+
+## Build tool ##
+.gradle/
+build/
+
+## Application data directory ##
+cache/

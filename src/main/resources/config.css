@@ -1,0 +1,13 @@
+.teamConfig {
+    -fx-max-width: 300;
+    -fx-min-width: 300;
+    -fx-border-width: 2px;
+    -fx-border-radius: 1px;
+    -fx-padding: 5;
+}
+.teamConfig.blueTeam {
+    -fx-border-color: blue;
+}
+.teamConfig.redTeam {
+    -fx-border-color: red;
+}

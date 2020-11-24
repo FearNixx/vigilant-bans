@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.control.ProgressBar?>
+<?import java.net.URL?>
+<VBox xmlns:fx="javafx:com.sun.javafx.tools.ant"
+      fx:controller="de.fearnixx.lolbanpick.installer.InstallerFX"
+      styleClass="installer"
+>
+    <VBox>
+        <TextFlow styleClass="installer-hello">
+            <Text>This application will help you install the ban-pick-ui.</Text>
+            <Text>We will install a local NodeJS, Git and the application from the volunteers.</Text>
+        </TextFlow>
+    </VBox>
+    <ProgressBar fx:id="progress" visible="false"/>
+    <VBox fx:id="stepsContainer" styleClass="installer-steps">
+    </VBox>
+    <Button fx:id="startInstallerBtn" onAction="#startInstaller">Start Installation</Button>
+    <stylesheets>
+        <URL value="@installer.css"/>
+    </stylesheets>
+</VBox>

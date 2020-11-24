@@ -1,0 +1,33 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+javafx {
+    version = "11.0.2"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+mainClassName = "$moduleName/de.fearnixx.lolbanpick.ManagerFX"
+
+dependencies {
+    implementation 'org.openjfx:javafx-controls:11.0.2'
+    implementation 'org.openjfx:javafx-fxml:11.0.2'
+    implementation 'org.slf4j:slf4j-api:1.7.27'
+    implementation 'org.slf4j:slf4j-simple:1.7.27'
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+wrapper {
+    version = "6.7.1"
+    distributionType = Wrapper.DistributionType.ALL
+}
