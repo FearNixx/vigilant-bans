@@ -6,21 +6,57 @@
 <?import javafx.scene.text.TextFlow?>
 <?import javafx.scene.control.ProgressBar?>
 <?import java.net.URL?>
-<VBox xmlns:fx="javafx:com.sun.javafx.tools.ant"
-      fx:controller="de.fearnixx.lolbanpick.installer.InstallerFX"
-      styleClass="installer"
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.Hyperlink?>
+<GridPane xmlns:fx="javafx:com.sun.javafx.tools.ant"
+          fx:controller="de.fearnixx.lolbanpick.installer.InstallerFX"
+          styleClass="installer"
 >
-    <VBox>
-        <TextFlow styleClass="installer-hello">
-            <Text>This application will help you install the ban-pick-ui.</Text>
-            <Text>We will install a local NodeJS, Git and the application from the volunteers.</Text>
-        </TextFlow>
+    <TextFlow styleClass="installer-hello"
+              GridPane.columnIndex="0" GridPane.columnSpan="1"
+              GridPane.rowIndex="0"
+    >
+        <Text>This application will help you install the ban-pick-ui.</Text>
+        <Text>We will install a local NodeJS, Git and the application from the volunteers.</Text>
+    </TextFlow>
+    <Button fx:id="startInstallerBtn" text="Start Installation"
+            onAction="#startInstaller"
+            GridPane.columnIndex="1" GridPane.columnSpan="1"
+            GridPane.rowIndex="0" GridPane.rowSpan="1"
+    />
+    <ProgressBar fx:id="progress" visible="false"
+                 GridPane.columnIndex="0" GridPane.columnSpan="2"
+                 GridPane.rowIndex="1"
+    />
+    <VBox fx:id="stepsContainer" styleClass="installer-steps"
+          GridPane.columnIndex="0" GridPane.columnSpan="1"
+          GridPane.rowIndex="2" GridPane.rowSpan="1"
+    />
+    <VBox styleClass="logo"
+          GridPane.columnIndex="1" GridPane.columnSpan="1"
+          GridPane.rowIndex="3" GridPane.rowSpan="1"
+    >
+        <ImageView>
+            <Image url="Fearnixx UG112x112.png"/>
+        </ImageView>
     </VBox>
-    <ProgressBar fx:id="progress" visible="false"/>
-    <VBox fx:id="stepsContainer" styleClass="installer-steps">
-    </VBox>
-    <Button fx:id="startInstallerBtn" onAction="#startInstaller">Start Installation</Button>
+    <TextFlow styleClass="socialLink"
+              GridPane.columnIndex="1" GridPane.columnSpan="1"
+              GridPane.rowIndex="4" GridPane.rowSpan="1"
+    >
+        <Text>GitHub:</Text>
+        <Hyperlink text="vigilant-parakeet">https://github.com/fearnixx/vigilant-parakeet</Hyperlink>
+    </TextFlow>
+    <TextFlow styleClass="socialLink"
+              GridPane.columnIndex="1" GridPane.columnSpan="1"
+              GridPane.rowIndex="5" GridPane.rowSpan="1"
+    >
+        <Text>Twitter</Text>
+        <Hyperlink text="\@FearNixxGaming">https://twitter.com/fearnixxgaming</Hyperlink>
+    </TextFlow>
     <stylesheets>
         <URL value="@installer.css"/>
     </stylesheets>
-</VBox>
+</GridPane>
