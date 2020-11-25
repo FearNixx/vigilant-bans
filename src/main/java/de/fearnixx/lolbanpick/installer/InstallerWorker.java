@@ -37,7 +37,7 @@ public class InstallerWorker implements Runnable {
         final List<Runnable> steps = List.of(
                 this::clearOutput,
                 () -> downloadNodeJS().ifPresent(this::extractNodeJS),
-                () -> downloadGitWin().ifPresent(this::extractGitWin),
+//                () -> downloadGitWin().ifPresent(this::extractGitWin),
                 () -> downloadRepository().ifPresent(this::extractRepository),
                 this::installNodeDependencies,
                 this::notifyDone

@@ -47,7 +47,7 @@
               GridPane.rowIndex="4" GridPane.rowSpan="1"
     >
         <Text>GitHub:</Text>
-        <Hyperlink text="vigilant-parakeet">https://github.com/fearnixx/vigilant-parakeet</Hyperlink>
+        <Hyperlink text="vigilant-bans">https://github.com/fearnixx/vigilant-bans</Hyperlink>
     </TextFlow>
     <TextFlow styleClass="socialLink"
               GridPane.columnIndex="1" GridPane.columnSpan="1"
