@@ -15,7 +15,7 @@ javafx {
     modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
-mainClassName = "$moduleName/de.fearnixx.lolbanpick.ManagerFX"
+mainClassName = "de.fearnixx.lolbanpick.ManagerFX"
 
 dependencies {
     implementation 'org.openjfx:javafx-controls:11.0.2'
@@ -28,6 +28,6 @@ dependencies {
 }
 
 wrapper {
-    version = "6.7.1"
+    gradleVersion = "6.7.1"
     distributionType = Wrapper.DistributionType.ALL
 }

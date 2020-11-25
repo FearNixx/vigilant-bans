@@ -137,19 +137,21 @@ public class RunnerFX implements ShutdownListener, Initializable {
             configOpen.setDisable(true);
             try {
                 final var configFXMLLoader = new FXMLLoader(ManagerFX.findResource("config.fxml"));
+
                 final Parent root = configFXMLLoader.load();
                 final var stage = new Stage();
                 stage.setTitle(String.format(ManagerFX.APP_TITLE_FORMAT, "Config"));
                 stage.setScene(new Scene(root, 600, 400));
                 stage.setOnHidden(e -> {
                     configStage.set(null);
-                    configController.get().onShutdown();
-                    configController.set(null);
+                    this.configController.get().onShutdown();
+                    this.configController.set(null);
                     configOpen.setDisable(false);
                 });
                 stage.show();
 
-                configController.set(configFXMLLoader.getController());
+                this.configController.set(configFXMLLoader.getController());
+                this.configController.get().setAllowLogoChange(!layoutServer.isAlive());
                 configStage.set(stage);
             } catch (IOException e) {
                 logger.error("Error opening config stage!", e);

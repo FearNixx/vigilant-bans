@@ -81,12 +81,17 @@
                 />
             </GridPane>
         </HBox>
+        <TextField disable="true" fx:id="logoPath" />
+        <Button text="Choose logo"
+                fx:id="logoChooseBtn"
+                onAction="#openLogoChooser"
+        />
         <Button text="Save &amp; Close"
                 fx:id="saveAndCloseBtn"
                 onAction="#saveAndClose"
         />
     </VBox>
     <stylesheets>
-        <URL value="@config.css" />
+        <URL value="@config.css"/>
     </stylesheets>
 </AnchorPane>

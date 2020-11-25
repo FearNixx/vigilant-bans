@@ -10,15 +10,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.AccessDeniedException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ConfigFX implements ShutdownListener, Initializable {
@@ -75,12 +77,25 @@ public class ConfigFX implements ShutdownListener, Initializable {
     private TextField redRGB3;
 
     @FXML
+    private TextField logoPath;
+
+    @FXML
+    private Button logoChooseBtn;
+    private FileChooser logoChooser = new FileChooser();
+
+    @FXML
     private Button saveAndCloseBtn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        logger.info("Attempting to read current configuration.");
+        logoPath.setDisable(true);
+        logoChooser.setInitialDirectory(new File(".").getAbsoluteFile());
+        final var extFilter = new FileChooser.ExtensionFilter("Image files", "*.png");
+        logoChooser.getExtensionFilters().add(extFilter);
+        logoChooser.setSelectedExtensionFilter(extFilter);
+        logoChooser.setTitle("Choose logo.");
 
+        logger.info("Attempting to read current configuration.");
         try (var reader = new FileReader(new File(Constants.PICKBAN_DIR, CONFIG_FILE_NAME))) {
             final var root = GSON.fromJson(reader, JsonObject.class);
             final var frontendSettings = root.getAsJsonObject(ConfigKeys.FRONTEND);
@@ -96,7 +111,7 @@ public class ConfigFX implements ShutdownListener, Initializable {
 
             final var teamRed = frontendSettings.get(ConfigKeys.TEAM_RED).getAsJsonObject();
             redScore.setText(Integer.toString(teamRed.get(ConfigKeys.TEAM_SCORE).getAsInt()));
-            redName.setText(teamBlue.get(ConfigKeys.TEAM_NAME).getAsString());
+            redName.setText(teamRed.get(ConfigKeys.TEAM_NAME).getAsString());
             redCoach.setText(teamRed.get(ConfigKeys.TEAM_COACH).getAsString());
 
         } catch (IOException e) {
@@ -129,7 +144,7 @@ public class ConfigFX implements ShutdownListener, Initializable {
             final var frontendConfig = settings.get(ConfigKeys.FRONTEND).getAsJsonObject();
             frontendConfig.addProperty(ConfigKeys.ENABLE_SCORES, cbScoreEnabled.isSelected());
             frontendConfig.addProperty(ConfigKeys.ENABLE_SPELLS, cbSpellsEnabled.isSelected());
-            frontendConfig.addProperty(ConfigKeys.ENABLE_SCORES, cbCoachesEnabled.isSelected());
+            frontendConfig.addProperty(ConfigKeys.ENABLE_COACHES, cbCoachesEnabled.isSelected());
 
             final var teamBlue = frontendConfig.getAsJsonObject(ConfigKeys.TEAM_BLUE);
             teamBlue.addProperty(ConfigKeys.TEAM_SCORE, Integer.parseInt(blueScore.getText()));
@@ -142,11 +157,38 @@ public class ConfigFX implements ShutdownListener, Initializable {
             teamRed.addProperty(ConfigKeys.TEAM_COACH, redCoach.getText());
 
             GSON.toJson(settings, writer);
-
-            return true;
         } catch (IOException e) {
             logger.error("Failed to save configuration!", e);
             return false;
         }
+
+        if (!logoChooseBtn.isDisable()) {
+            final var logoFile = new File(logoPath.getText());
+            if (Files.exists(logoFile.toPath())) {
+                logger.info("Attempting to copy logo file: {}", logoFile.toPath());
+                try (var out = new FileOutputStream(new File(Constants.PICKBAN_EULAYOUT_DIR, "src/assets/Logo_Itemania_2019.png"))) {
+                    Files.copy(logoFile.toPath(), out);
+                } catch (AccessDeniedException e) {
+                    logger.warn("Access to logo file denied. Is the overlay running?");
+                } catch (IOException e) {
+                    logger.error("Failed to copy logo file!", e);
+                    return false;
+                }
+            }
+        } else {
+            logger.debug("Not setting logo as it was not allowed.");
+        }
+        return true;
+    }
+
+    public void openLogoChooser() {
+        final var file = logoChooser.showOpenDialog(saveAndCloseBtn.getScene().getWindow());
+        if (file != null) {
+            logoPath.setText(file.toPath().toString());
+        }
+    }
+
+    public void setAllowLogoChange(boolean allow) {
+        logoChooseBtn.setDisable(!allow);
     }
 }
