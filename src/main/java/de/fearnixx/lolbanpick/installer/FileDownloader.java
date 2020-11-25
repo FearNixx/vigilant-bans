@@ -23,7 +23,7 @@ public class FileDownloader {
         final var tempFile = Files.createTempDirectory("lolbanpickui-downloadcache").resolve(downloadFileName);
         logger.debug("Downloading to: {}", tempFile);
         final var request = HttpRequest.newBuilder(constantURI(uri))
-                .timeout(Duration.ofMinutes(40))
+                .timeout(Duration.ofMinutes(120))
                 .version(HttpClient.Version.HTTP_1_1)
                 .build();
         try {
