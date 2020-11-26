@@ -203,7 +203,7 @@ public class InstallerWorker implements Runnable {
                 .filter(File::isDirectory)
                 .collect(Collectors.toSet());
         return directories.stream().anyMatch(f -> f.getName().contains(Constants.NODE_DIR.getName()))
-                && directories.stream().anyMatch(f -> f.getName().contains(Constants.GITWIN_DIR.getName()))
+//                && directories.stream().anyMatch(f -> f.getName().contains(Constants.GITWIN_DIR.getName()))
                 && directories.stream().anyMatch(f -> f.getName().contains(Constants.PICKBAN_DIR.getName()));
     }
 }
