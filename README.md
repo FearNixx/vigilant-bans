@@ -9,10 +9,10 @@ project and allows some basic configuration.
 ## Set-Up / Usage
 After downloading the archive (zip or tar), the application can be started using the ``bin/vigilant-bands.bat`` file.  
 When run, the application will use ``<working-directory>/cache`` to store and look up its dependencies.  
-If the required dependencies are missing, the installer Window will open. A single click on "Install" will install those.  
+If the required dependencies are missing, the installer window will open. A single click on "Install" will install those.  
 
 When the installation has finished, the application can be closed and re-opened. The small manager UI will show now:
-* Both the LCU-Broker and the EU-Layout Server can now be started via. single button clicks. (Remember __to start the League of Legends client!__)  
+* Start/Stop controls for both the LCU-Broker and the EU-Layout Server. (Remember __to start the League of Legends client!__)  
 * The configuration feature allows the user to update the ``config.json`` in real time.  
   _Note: The logo in the middle of the overlay can only be changed when the layout is offline._
 * The overlay will come available at [http://localhost:3000/?backend=ws://localhost:8999](http://localhost:3000/?backend=ws://localhost:8999)
