@@ -3,8 +3,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.text.TextFlow?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="de.fearnixx.lolbanpick.runner.RunnerFX"
@@ -40,8 +38,14 @@
     </VBox>
 
     <HBox AnchorPane.bottomAnchor="0.0">
-        <Button text="Reopen installer" onAction="#openInstaller"/>
-        <Button text="Config" fx:id="configOpen" onAction="#openConfig"/>
+        <Button text="Reopen installer"
+                fx:id="resetCacheBtn"
+                onAction="#openInstaller"
+        />
+        <Button text="Config"
+                fx:id="configOpen"
+                onAction="#openConfig"
+        />
     </HBox>
     <stylesheets>
         <URL value="@runner.css"/>

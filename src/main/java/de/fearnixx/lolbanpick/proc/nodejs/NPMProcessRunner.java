@@ -19,7 +19,7 @@ public class NPMProcessRunner implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(NPMProcessRunner.class);
 
     private final String[] nodeCommand;
-    private final AtomicReference<Path> workingDirectory = new AtomicReference<Path>();
+    private final AtomicReference<Path> workingDirectory = new AtomicReference<>();
     private final AtomicReference<Process> processRef = new AtomicReference<>();
     private final List<Runnable> doneListeners = new LinkedList<>();
     private final Map<String, String> env = new ConcurrentHashMap<>();
@@ -27,6 +27,9 @@ public class NPMProcessRunner implements Runnable {
     public NPMProcessRunner(String... nodeCommand) {
         this.nodeCommand = nodeCommand;
         workingDirectory.set(new File(".").getAbsoluteFile().toPath());
+        // Avoid cluttering the user cache with any of our stuff.
+        // This includes the frequent error logs after killing NPM...
+        env.put("NPM_CONFIG_CACHE", Constants.NPM_CACHE_DIR.toPath().toString());
     }
 
     public synchronized NPMProcessRunner setWorkingDirectory(Path directory) {

@@ -1,6 +1,7 @@
 package de.fearnixx.lolbanpick.runner;
 
 import de.fearnixx.lolbanpick.Constants;
+import de.fearnixx.lolbanpick.HostServicesAware;
 import de.fearnixx.lolbanpick.ManagerFX;
 import de.fearnixx.lolbanpick.ShutdownListener;
 import de.fearnixx.lolbanpick.config.ConfigFX;
@@ -15,7 +16,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class RunnerFX implements ShutdownListener, Initializable {
+public class RunnerFX implements ShutdownListener, Initializable, HostServicesAware {
 
     private static final Logger logger = LoggerFactory.getLogger(RunnerFX.class);
     private static final ExecutorService childExecutor = Executors.newFixedThreadPool(3, task -> {
@@ -41,6 +41,7 @@ public class RunnerFX implements ShutdownListener, Initializable {
     private final AtomicReference<Stage> configStage = new AtomicReference<>();
     private final AtomicReference<ConfigFX> configController = new AtomicReference<>();
     private final AtomicReference<HostServices> hostServices = new AtomicReference<>();
+    private final AtomicReference<Runnable> installerRequest = new AtomicReference<>();
 
     @FXML
     private AnchorPane main;
@@ -63,6 +64,10 @@ public class RunnerFX implements ShutdownListener, Initializable {
     @FXML
     private Button configOpen;
 
+    @FXML
+    private Button resetCacheBtn;
+
+    @Override
     public void setHostServices(HostServices services) {
         hostServices.set(services);
     }
@@ -74,6 +79,10 @@ public class RunnerFX implements ShutdownListener, Initializable {
         layoutServer.setWorkingDirectory(Constants.PICKBAN_EULAYOUT_DIR.toPath());
         layoutServer.env("NOOPEN", "true");
         layoutServer.onDone(() -> Platform.runLater(this::onEULayoutServerDone));
+    }
+
+    public void setOnRequestInstaller(Runnable runnable) {
+        installerRequest.set(runnable);
     }
 
     @Override
@@ -93,6 +102,7 @@ public class RunnerFX implements ShutdownListener, Initializable {
         if (!lcuBroker.isAlive()) {
             lcuBrokerStart.setDisable(true);
             lcuBrokerStop.setVisible(true);
+            resetCacheBtn.setDisable(true);
             childExecutor.execute(lcuBroker);
         }
     }
@@ -100,6 +110,7 @@ public class RunnerFX implements ShutdownListener, Initializable {
     private void onLCUBrokerDone() {
         lcuBrokerStart.setDisable(false);
         lcuBrokerStop.setVisible(false);
+        resetCacheBtn.setDisable(anyAlive());
     }
 
     public void stopLCUBroker() {
@@ -113,6 +124,7 @@ public class RunnerFX implements ShutdownListener, Initializable {
             layoutServerStart.setDisable(true);
             layoutServerStop.setVisible(true);
             layoutServerWeb.setVisible(true);
+            resetCacheBtn.setDisable(true);
             childExecutor.execute(layoutServer);
         }
     }
@@ -121,6 +133,7 @@ public class RunnerFX implements ShutdownListener, Initializable {
         layoutServerStart.setDisable(false);
         layoutServerStop.setVisible(false);
         layoutServerWeb.setVisible(false);
+        resetCacheBtn.setDisable(anyAlive());
     }
 
     public void stopEULayoutServer() {
@@ -134,8 +147,9 @@ public class RunnerFX implements ShutdownListener, Initializable {
         childExecutor.execute(() -> {
             try {
                 Files.walkFileTree(Constants.appsDir.toPath(), new DeletingFileVisitor());
+                Platform.runLater(() -> installerRequest.get().run());
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                logger.error("Error resetting cache directory!", e);
             }
         });
     }
@@ -172,7 +186,11 @@ public class RunnerFX implements ShutdownListener, Initializable {
         }
     }
 
+    private boolean anyAlive() {
+        return lcuBroker.isAlive() || layoutServer.isAlive();
+    }
+
     public void openOverlay() {
-        hostServices.get().showDocument("http://localhost:3000/?backend=ws://localhost:8999");
+        hostServices.get().showDocument(Constants.OVERLAY_URI);
     }
 }

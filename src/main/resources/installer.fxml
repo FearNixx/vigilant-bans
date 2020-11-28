@@ -10,6 +10,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.layout.AnchorPane?>
 <GridPane xmlns:fx="javafx:com.sun.javafx.tools.ant"
           fx:controller="de.fearnixx.lolbanpick.installer.InstallerFX"
           styleClass="installer"
@@ -19,20 +20,24 @@
               GridPane.rowIndex="0"
     >
         <Text>This application will help you install the ban-pick-ui.</Text>
-        <Text>We will install a local NodeJS, Git and the application from the volunteers.</Text>
+        <Text>We will install a local NodeJS and the application from the volunteers.</Text>
     </TextFlow>
-    <Button fx:id="startInstallerBtn" text="Start Installation"
-            onAction="#startInstaller"
-            GridPane.columnIndex="1" GridPane.columnSpan="1"
-            GridPane.rowIndex="0" GridPane.rowSpan="1"
-    />
+    <AnchorPane GridPane.columnIndex="1" GridPane.columnSpan="1"
+                GridPane.rowIndex="0" GridPane.rowSpan="1"
+    >
+        <Button fx:id="startInstallerBtn" text="Start Installation"
+                onAction="#startInstaller"
+                AnchorPane.bottomAnchor="0.0"
+        />
+    </AnchorPane>
     <ProgressBar fx:id="progress" visible="false"
-                 GridPane.columnIndex="0" GridPane.columnSpan="2"
+                 maxWidth="Infinity"
+                 GridPane.columnIndex="0" GridPane.columnSpan="1"
                  GridPane.rowIndex="1"
     />
     <VBox fx:id="stepsContainer" styleClass="installer-steps"
           GridPane.columnIndex="0" GridPane.columnSpan="1"
-          GridPane.rowIndex="2" GridPane.rowSpan="1"
+          GridPane.rowIndex="2" GridPane.rowSpan="3"
     />
     <VBox styleClass="logo"
           GridPane.columnIndex="1" GridPane.columnSpan="1"
@@ -42,19 +47,17 @@
             <Image url="Fearnixx UG112x112.png"/>
         </ImageView>
     </VBox>
-    <TextFlow styleClass="socialLink"
-              GridPane.columnIndex="1" GridPane.columnSpan="1"
+    <TextFlow GridPane.columnIndex="1" GridPane.columnSpan="1"
               GridPane.rowIndex="4" GridPane.rowSpan="1"
     >
         <Text>GitHub:</Text>
-        <Hyperlink text="vigilant-bans">https://github.com/fearnixx/vigilant-bans</Hyperlink>
+        <Hyperlink text="vigilant-bans" onAction="#openSocialGitHub" />
     </TextFlow>
-    <TextFlow styleClass="socialLink"
-              GridPane.columnIndex="1" GridPane.columnSpan="1"
+    <TextFlow GridPane.columnIndex="1" GridPane.columnSpan="1"
               GridPane.rowIndex="5" GridPane.rowSpan="1"
     >
         <Text>Twitter</Text>
-        <Hyperlink text="\@FearNixxGaming">https://twitter.com/fearnixxgaming</Hyperlink>
+        <Hyperlink text="\@FearNixxGaming" onAction="#openSocialTwitter" />
     </TextFlow>
     <stylesheets>
         <URL value="@installer.css"/>

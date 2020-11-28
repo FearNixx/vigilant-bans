@@ -1,5 +1,6 @@
 package de.fearnixx.lolbanpick;
 
+import de.fearnixx.lolbanpick.installer.InstallerFX;
 import de.fearnixx.lolbanpick.installer.InstallerWorker;
 import de.fearnixx.lolbanpick.runner.RunnerFX;
 import javafx.application.Application;
@@ -15,27 +16,17 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Objects;
 
 public class ManagerFX extends Application {
 
     public static final String APP_TITLE_FORMAT = "Vigilant-Bans | %s";
     private static final Logger logger = LoggerFactory.getLogger(ManagerFX.class);
-    private static final AtomicReference<ManagerFX> INSTANCE = new AtomicReference<>();
 
     private static final List<ShutdownListener> shutdownListeners = new LinkedList<>();
 
-    public ManagerFX() {
-        synchronized (INSTANCE) {
-            if (INSTANCE.get() != null) {
-                throw new IllegalStateException("Cannot start multiple instances!");
-            }
-            INSTANCE.set(this);
-        }
-    }
-
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         String javaVersion = System.getProperty("java.version");
         String javafxVersion = System.getProperty("javafx.version");
         logger.info("Launching in Java {} and JavaFX {}", javaVersion, javafxVersion);
@@ -53,26 +44,52 @@ public class ManagerFX extends Application {
         return !InstallerWorker.checkPreconditions();
     }
 
-    private void openInstaller(Stage primaryStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(findResource("installer.fxml"));
-        Parent root = loader.load();
-        registerShutdownListener(loader.getController());
-        primaryStage.setScene(new Scene(root, 800D, 600D));
-        primaryStage.setTitle(String.format(APP_TITLE_FORMAT, "Installer"));
-        primaryStage.setOnHidden(e -> performShutdown());
-        primaryStage.show();
+    private void openInstaller(Stage primaryStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(findResource("installer.fxml"));
+            Parent root = loader.load();
+            initController(loader.getController());
+            primaryStage.setScene(new Scene(root, 800D, 600D));
+            primaryStage.setTitle(String.format(APP_TITLE_FORMAT, "Installer"));
+            primaryStage.setOnHidden(e -> performShutdown());
+
+            loader.<InstallerFX>getController().onDone(() -> Platform.runLater(() -> {
+                unregisterShutdownListener(loader.getController());
+                openRunner(primaryStage);
+            }));
+            primaryStage.show();
+        } catch (IOException e) {
+            logger.error("Error opening installer in primary stage!", e);
+        }
     }
 
-    private void openRunner(Stage primaryStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(findResource("runner.fxml"));
-        Parent root  = loader.load();
-        final RunnerFX runner = loader.getController();
-        runner.setHostServices(getHostServices());
-        registerShutdownListener(runner);
-        primaryStage.setScene(new Scene(root, 600D, 200D));
-        primaryStage.setTitle(String.format(APP_TITLE_FORMAT, "Runner"));
-        primaryStage.setOnHidden(e -> performShutdown());
-        primaryStage.show();
+    private void openRunner(Stage primaryStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(findResource("runner.fxml"));
+            Parent root = loader.load();
+            initController(loader.getController());
+
+            primaryStage.setScene(new Scene(root, 600D, 200D));
+            primaryStage.setTitle(String.format(APP_TITLE_FORMAT, "Runner"));
+            primaryStage.setOnHidden(e -> performShutdown());
+
+            loader.<RunnerFX>getController().setOnRequestInstaller(() -> Platform.runLater(() -> {
+                unregisterShutdownListener(loader.getController());
+                openInstaller(primaryStage);
+            }));
+            primaryStage.show();
+        } catch (IOException e) {
+            logger.error("Error opening runner in primary stage!", e);
+        }
+    }
+
+    private void initController(Object controller) {
+        if (controller instanceof ShutdownListener) {
+            registerShutdownListener(((ShutdownListener) controller));
+        }
+        if (controller instanceof HostServicesAware) {
+            ((HostServicesAware) controller).setHostServices(getHostServices());
+        }
     }
 
     public static URL findResource(String resourcePath) {
@@ -90,6 +107,14 @@ public class ManagerFX extends Application {
         }
     }
 
+    public static void unregisterShutdownListener(ShutdownListener listener) {
+        synchronized (shutdownListeners) {
+            // Remove ALL references, just in case it was registered multiple times.
+            shutdownListeners.removeIf(l -> Objects.equals(l, listener));
+        }
+    }
+
+    @SuppressWarnings({"java:S2274", "java:S2142"})
     private void performShutdown() {
         notifyShutdownHandlers();
         try {
@@ -107,12 +132,6 @@ public class ManagerFX extends Application {
         synchronized (shutdownListeners) {
             shutdownListeners.forEach(ShutdownListener::onShutdown);
             shutdownListeners.clear();
-        }
-    }
-
-    public ManagerFX getInstance() {
-        synchronized (INSTANCE) {
-            return INSTANCE.get();
         }
     }
 

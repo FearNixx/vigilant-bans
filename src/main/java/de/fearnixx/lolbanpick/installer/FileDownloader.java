@@ -3,7 +3,6 @@ package de.fearnixx.lolbanpick.installer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,6 +17,9 @@ import java.time.Duration;
 public class FileDownloader {
 
     private static final Logger logger = LoggerFactory.getLogger(FileDownloader.class);
+
+    private FileDownloader() {
+    }
 
     public static Path downloadFile(String uri, String downloadFileName) throws IOException {
         final var tempFile = Files.createTempDirectory("lolbanpickui-downloadcache").resolve(downloadFileName);
@@ -49,8 +51,7 @@ public class FileDownloader {
         try {
             return new URI(theURI);
         } catch (URISyntaxException e) {
-            logger.error("Constant URI is broken? How did you do this...", e);
-            throw new RuntimeException(e);
+            throw new IllegalStateException("Constant URI failed to parse!", e);
         }
     }
 }

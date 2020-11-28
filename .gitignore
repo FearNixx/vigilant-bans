@@ -7,4 +7,5 @@
 build/
 
 ## Application data directory ##
-cache/
+run/
+!run/.gitkeep
