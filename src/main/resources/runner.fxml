@@ -3,6 +3,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="de.fearnixx.lolbanpick.runner.RunnerFX"
@@ -29,6 +31,11 @@
                 fx:id="layoutServerStop"
                 onAction="#stopEULayoutServer"
                 visible="false"
+        />
+        <Button fx:id="layoutServerWeb"
+                visible="false"
+                text="Open overlay in browser"
+                onAction="#openOverlay"
         />
     </VBox>
 

@@ -1,6 +1,7 @@
 package de.fearnixx.lolbanpick;
 
 import de.fearnixx.lolbanpick.installer.InstallerWorker;
+import de.fearnixx.lolbanpick.runner.RunnerFX;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +19,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ManagerFX extends Application {
 
-    public static final String APP_TITLE_FORMAT = "Lol-Ban-Pick-UI | Manager | %s - by FearNixx";
+    public static final String APP_TITLE_FORMAT = "Vigilant-Bans | %s";
     private static final Logger logger = LoggerFactory.getLogger(ManagerFX.class);
     private static final AtomicReference<ManagerFX> INSTANCE = new AtomicReference<>();
 
@@ -65,7 +66,9 @@ public class ManagerFX extends Application {
     private void openRunner(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(findResource("runner.fxml"));
         Parent root  = loader.load();
-        registerShutdownListener(loader.getController());
+        final RunnerFX runner = loader.getController();
+        runner.setHostServices(getHostServices());
+        registerShutdownListener(runner);
         primaryStage.setScene(new Scene(root, 600D, 200D));
         primaryStage.setTitle(String.format(APP_TITLE_FORMAT, "Runner"));
         primaryStage.setOnHidden(e -> performShutdown());

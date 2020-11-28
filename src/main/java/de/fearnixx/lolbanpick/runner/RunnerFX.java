@@ -6,6 +6,7 @@ import de.fearnixx.lolbanpick.ShutdownListener;
 import de.fearnixx.lolbanpick.config.ConfigFX;
 import de.fearnixx.lolbanpick.fs.DeletingFileVisitor;
 import de.fearnixx.lolbanpick.proc.nodejs.NPMProcessRunner;
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +40,7 @@ public class RunnerFX implements ShutdownListener, Initializable {
     private final NPMProcessRunner layoutServer = new NPMProcessRunner("run", "start");
     private final AtomicReference<Stage> configStage = new AtomicReference<>();
     private final AtomicReference<ConfigFX> configController = new AtomicReference<>();
+    private final AtomicReference<HostServices> hostServices = new AtomicReference<>();
 
     @FXML
     private AnchorPane main;
@@ -55,13 +58,21 @@ public class RunnerFX implements ShutdownListener, Initializable {
     private Button layoutServerStop;
 
     @FXML
+    private Button layoutServerWeb;
+
+    @FXML
     private Button configOpen;
+
+    public void setHostServices(HostServices services) {
+        hostServices.set(services);
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         lcuBroker.setWorkingDirectory(Constants.PICKBAN_DIR.toPath());
         lcuBroker.onDone(() -> Platform.runLater(this::onLCUBrokerDone));
         layoutServer.setWorkingDirectory(Constants.PICKBAN_EULAYOUT_DIR.toPath());
+        layoutServer.env("NOOPEN", "true");
         layoutServer.onDone(() -> Platform.runLater(this::onEULayoutServerDone));
     }
 
@@ -101,6 +112,7 @@ public class RunnerFX implements ShutdownListener, Initializable {
         if (!layoutServer.isAlive()) {
             layoutServerStart.setDisable(true);
             layoutServerStop.setVisible(true);
+            layoutServerWeb.setVisible(true);
             childExecutor.execute(layoutServer);
         }
     }
@@ -108,6 +120,7 @@ public class RunnerFX implements ShutdownListener, Initializable {
     private void onEULayoutServerDone() {
         layoutServerStart.setDisable(false);
         layoutServerStop.setVisible(false);
+        layoutServerWeb.setVisible(false);
     }
 
     public void stopEULayoutServer() {
@@ -157,5 +170,9 @@ public class RunnerFX implements ShutdownListener, Initializable {
                 logger.error("Error opening config stage!", e);
             }
         }
+    }
+
+    public void openOverlay() {
+        hostServices.get().showDocument("http://localhost:3000/?backend=ws://localhost:8999");
     }
 }

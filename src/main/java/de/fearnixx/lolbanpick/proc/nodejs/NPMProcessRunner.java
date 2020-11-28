@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class NPMProcessRunner implements Runnable {
@@ -20,6 +22,7 @@ public class NPMProcessRunner implements Runnable {
     private final AtomicReference<Path> workingDirectory = new AtomicReference<Path>();
     private final AtomicReference<Process> processRef = new AtomicReference<>();
     private final List<Runnable> doneListeners = new LinkedList<>();
+    private final Map<String, String> env = new ConcurrentHashMap<>();
 
     public NPMProcessRunner(String... nodeCommand) {
         this.nodeCommand = nodeCommand;
@@ -33,6 +36,11 @@ public class NPMProcessRunner implements Runnable {
 
     public synchronized void onDone(Runnable listener) {
         doneListeners.add(listener);
+    }
+
+    public NPMProcessRunner env(String key, String value) {
+        env.put(key, value);
+        return this;
     }
 
     @Override
@@ -49,12 +57,12 @@ public class NPMProcessRunner implements Runnable {
             var cmd = new String[nodeCommand.length + 1];
             cmd[0] = Constants.NPM_EXECUTABLE.toPath().toString();
             System.arraycopy(nodeCommand, 0, cmd, 1, nodeCommand.length);
-            proc = new ProcessBuilder()
+            final var procBuilder = new ProcessBuilder()
                     .command(cmd)
                     .directory(workingDirectory.get().toFile())
-                    .inheritIO() // -- CANNOT INHERIT IO for node processes
-                    // They will steal the CPU time from our thread if attached leaving them unable to be killed
-                    .start();
+                    .inheritIO();
+            procBuilder.environment().putAll(env);
+            proc = procBuilder.start();
         } catch (IOException e) {
             logger.error("Error starting \"npm {}\"!", String.join(" ", nodeCommand), e);
             return;

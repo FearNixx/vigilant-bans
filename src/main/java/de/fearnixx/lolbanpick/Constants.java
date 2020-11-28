@@ -15,7 +15,7 @@ public class Constants {
     public static final String GITWIN_VERSION = "2.29.2_windows.2";
     public static final File GITWIN_DIR = new File(appsDir, "git-for-windows");
 
-    public static final String PICKBAN_ARCHIVE = "https://github.com/FearNixx/lol-pick-ban-ui/archive/proposal/housekeeping.zip";
-    public static final File PICKBAN_DIR = new File(appsDir, "lol-pick-ban-ui-proposal-housekeeping");
+    public static final String PICKBAN_ARCHIVE = "https://github.com/RCVolus/lol-pick-ban-ui/archive/master.zip";
+    public static final File PICKBAN_DIR = new File(appsDir, "lol-pick-ban-ui-master");
     public static final File PICKBAN_EULAYOUT_DIR = new File(PICKBAN_DIR, "layouts/layout-volu-europe");
 }
