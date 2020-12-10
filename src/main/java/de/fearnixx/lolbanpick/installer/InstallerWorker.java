@@ -101,10 +101,12 @@ public class InstallerWorker implements Runnable {
         final var targetDirectoryArg = String.format("\"%s\"", Constants.GITWIN_DIR);
         Process process = null;
         try {
-            process = new ProcessBuilder()
+            final var processBuilder = new ProcessBuilder()
                     .command(exeFile.toString(), "-o", targetDirectoryArg, "-y")
-                    .inheritIO()
-                    .start();
+                    .inheritIO();
+            processBuilder.environment().put(Constants.OS_PATH_ENV, String.format("\"%s\"%s%s", Constants.NODE_DIR, File.pathSeparator, System.getenv(Constants.OS_PATH_ENV)));
+
+            process = processBuilder.start();
             process.waitFor();
         } catch (IOException e) {
             logger.error("Error starting git extraction!", e);
@@ -143,11 +145,13 @@ public class InstallerWorker implements Runnable {
         try {
             // === BEGIN LCU Broker dependencies ===
             echoStep("Install JS dependencies (LCU-Broker).");
-            proc = new ProcessBuilder()
+            final var processBuilder = new ProcessBuilder()
                     .command(Constants.NPM_EXECUTABLE.toPath().toString(), "install")
                     .directory(Constants.PICKBAN_DIR)
-                    .inheritIO()
-                    .start();
+                    .inheritIO();
+            processBuilder.environment().put(Constants.OS_PATH_ENV, String.format("\"%s\"%s%s", Constants.NODE_DIR, File.pathSeparator, System.getenv(Constants.OS_PATH_ENV)));
+
+            proc = processBuilder.start();
         } catch (IOException e) {
             logger.error("Error installing JS dependencies for LCU-Broker!", e);
             echoStep(String.format("Failed to install LCU-Broker dependencies! (Msg: %s)", e.getLocalizedMessage()));

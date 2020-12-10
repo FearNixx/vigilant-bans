@@ -6,6 +6,7 @@ public class Constants {
 
     private Constants() { }
 
+    public static final String OS_PATH_ENV = "PATH";
     public static final File appsDir = new File("./cache").getAbsoluteFile();
 
     public static final String NODE_URI = "https://nodejs.org/dist/v14.15.1/node-v14.15.1-win-x64.zip";
