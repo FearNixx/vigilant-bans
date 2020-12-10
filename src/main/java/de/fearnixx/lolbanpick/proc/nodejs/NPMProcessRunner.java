@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class NPMProcessRunner implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(NPMProcessRunner.class);
+    public static final String OS_PATH_ENV = "PATH";
 
     private final String[] nodeCommand;
     private final AtomicReference<Path> workingDirectory = new AtomicReference<>();
@@ -30,6 +31,9 @@ public class NPMProcessRunner implements Runnable {
         // Avoid cluttering the user cache with any of our stuff.
         // This includes the frequent error logs after killing NPM...
         env.put("NPM_CONFIG_CACHE", Constants.NPM_CACHE_DIR.toPath().toString());
+        // Prepend node installation directory to path.
+        env.put(OS_PATH_ENV,
+                String.format("\"%s\"%s%s", Constants.NODE_DIR, File.pathSeparator, System.getenv(OS_PATH_ENV)));
     }
 
     public synchronized NPMProcessRunner setWorkingDirectory(Path directory) {
