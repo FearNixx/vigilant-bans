@@ -105,7 +105,6 @@ public class InstallerWorker implements Runnable {
                     .command(exeFile.toString(), "-o", targetDirectoryArg, "-y")
                     .inheritIO();
             processBuilder.environment().put(Constants.OS_PATH_ENV, String.format("\"%s\"%s%s", Constants.NODE_DIR, File.pathSeparator, System.getenv(Constants.OS_PATH_ENV)));
-
             process = processBuilder.start();
             process.waitFor();
         } catch (IOException e) {
@@ -141,7 +140,7 @@ public class InstallerWorker implements Runnable {
     }
 
     private void installNodeDependencies() {
-        Process proc;
+        Process proc = null;
         try {
             // === BEGIN LCU Broker dependencies ===
             echoStep("Install JS dependencies (LCU-Broker).");
@@ -150,16 +149,13 @@ public class InstallerWorker implements Runnable {
                     .directory(Constants.PICKBAN_DIR)
                     .inheritIO();
             processBuilder.environment().put(Constants.OS_PATH_ENV, String.format("\"%s\"%s%s", Constants.NODE_DIR, File.pathSeparator, System.getenv(Constants.OS_PATH_ENV)));
-
             proc = processBuilder.start();
+            proc.waitFor();
         } catch (IOException e) {
             logger.error("Error installing JS dependencies for LCU-Broker!", e);
             echoStep(String.format("Failed to install LCU-Broker dependencies! (Msg: %s)", e.getLocalizedMessage()));
             Thread.currentThread().interrupt();
             return;
-        }
-        try {
-            proc.waitFor();
         } catch (InterruptedException e) {
             logger.warn("NPM Install interrupted!");
             proc.destroy();
@@ -170,19 +166,18 @@ public class InstallerWorker implements Runnable {
         try {
             // === BEGIN layout dependencies ===
             echoStep("Install JS dependencies (EU-Layout).");
-            proc = new ProcessBuilder()
+            final var processBuilder = new ProcessBuilder()
                     .command(Constants.NPM_EXECUTABLE.toPath().toString(), "install")
                     .directory(Constants.PICKBAN_EULAYOUT_DIR)
-                    .inheritIO()
-                    .start();
+                    .inheritIO();
+            processBuilder.environment().put(Constants.OS_PATH_ENV, String.format("\"%s\"%s%s", Constants.NODE_DIR, File.pathSeparator, System.getenv(Constants.OS_PATH_ENV)));
+            proc = processBuilder.start();
+            proc.waitFor();
         } catch (IOException e) {
             logger.error("Error installing JS dependencies for EU layout!", e);
             echoStep(String.format("Failed to install eu-layout dependencies! (Msg: %s)", e.getLocalizedMessage()));
             Thread.currentThread().interrupt();
             return;
-        }
-        try {
-            proc.waitFor();
         } catch (InterruptedException e) {
             logger.warn("NPM Install interrupted!");
             proc.destroy();
