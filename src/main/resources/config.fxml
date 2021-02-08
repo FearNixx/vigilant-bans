@@ -85,7 +85,11 @@
         <Button text="Choose logo"
                 fx:id="logoChooseBtn"
                 onAction="#openLogoChooser"
-        />
+        >
+            <tooltip>
+                <Tooltip text="Logo cannot be changed when the UI is running." />
+            </tooltip>
+        </Button>
         <Button text="Save &amp; Close"
                 fx:id="saveAndCloseBtn"
                 onAction="#saveAndClose"
