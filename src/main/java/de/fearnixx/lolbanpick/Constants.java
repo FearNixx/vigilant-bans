@@ -25,5 +25,6 @@ public class Constants {
 
     public static final String SOCIAL_TWITTER = "https://twitter.com/fearnixxgaming";
     public static final String SOCIAL_GITHUB = "https://github.com/fearnixx/vigilant-bans";
+    public static final String ICONS8 = "https://icons8.com";
     public static final String OVERLAY_URI = "http://localhost:3000/?backend=ws://localhost:8999";
 }

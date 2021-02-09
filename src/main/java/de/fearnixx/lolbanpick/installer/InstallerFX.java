@@ -92,4 +92,8 @@ public class InstallerFX implements ShutdownListener, HostServicesAware {
     public void openSocialGitHub() {
         hostServices.get().showDocument(Constants.SOCIAL_GITHUB);
     }
+
+    public void openIcons8() {
+        hostServices.get().showDocument(Constants.ICONS8);
+    }
 }

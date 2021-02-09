@@ -79,9 +79,11 @@ TextField {
     -fx-background-color: #2e3434;
     -fx-text-fill: white;
 }
-
 Text {
     -fx-fill: white;
+}
+.hyperlink:visited {
+    -fx-text-fill: #6868ff;
 }
 
 .progress-bar .track {

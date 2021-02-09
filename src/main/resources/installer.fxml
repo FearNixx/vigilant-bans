@@ -64,6 +64,13 @@
             <Text>Twitter</Text>
             <Hyperlink text="\@FearNixxGaming" onAction="#openSocialTwitter"/>
         </TextFlow>
+        <TextFlow>
+            <padding>
+                <Insets top="10" />
+            </padding>
+            <Text>with some icons from </Text>
+            <Hyperlink text="Icons8" onAction="#openIcons8"/>
+        </TextFlow>
     </VBox>
     <VBox fx:id="stepsContainer"
           GridPane.columnIndex="0"
