@@ -141,6 +141,7 @@ public class ConfigFX implements ShutdownListener, Initializable {
         }
 
         try (var writer = new FileWriter(new File(Constants.PICKBAN_DIR, CONFIG_FILE_NAME))) {
+            logger.info("Attempting to write current configuration.");
             final var frontendConfig = settings.get(ConfigKeys.FRONTEND).getAsJsonObject();
             frontendConfig.addProperty(ConfigKeys.ENABLE_SCORES, cbScoreEnabled.isSelected());
             frontendConfig.addProperty(ConfigKeys.ENABLE_SPELLS, cbSpellsEnabled.isSelected());
@@ -162,7 +163,7 @@ public class ConfigFX implements ShutdownListener, Initializable {
             return false;
         }
 
-        if (!logoChooseBtn.isDisable()) {
+        if (!logoChooseBtn.isDisable() && !logoPath.getText().isBlank()) {
             final var logoFile = new File(logoPath.getText());
             if (Files.exists(logoFile.toPath())) {
                 logger.info("Attempting to copy logo file: {}", logoFile.toPath());

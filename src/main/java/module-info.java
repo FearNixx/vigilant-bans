@@ -8,6 +8,7 @@ module lolbanpick.ui {
     opens de.fearnixx.lolbanpick.installer to javafx.fxml;
     opens de.fearnixx.lolbanpick.runner to javafx.fxml;
     opens de.fearnixx.lolbanpick.config to javafx.fxml;
+    opens de.fearnixx.lolbanpick.stage to javafx.fxml;
 
     exports de.fearnixx.lolbanpick;
 }

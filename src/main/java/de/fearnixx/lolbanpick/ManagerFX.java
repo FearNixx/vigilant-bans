@@ -8,7 +8,9 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +23,7 @@ import java.util.Objects;
 public class ManagerFX extends Application {
 
     public static final String APP_TITLE_FORMAT = "Vigilant-Bans | %s";
+    private static final String APP_ICON = "/Fearnixx UG112x112.png";
     private static final Logger logger = LoggerFactory.getLogger(ManagerFX.class);
 
     private static final List<ShutdownListener> shutdownListeners = new LinkedList<>();
@@ -33,6 +36,9 @@ public class ManagerFX extends Application {
 
         Runtime.getRuntime().addShutdownHook(new Thread(ManagerFX::notifyShutdownHandlers));
 
+        primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.resizableProperty().set(false);
+        primaryStage.getIcons().setAll(new Image(getClass().getResourceAsStream(APP_ICON)));
         if (shouldStartInstaller()) {
             openInstaller(primaryStage);
         } else {

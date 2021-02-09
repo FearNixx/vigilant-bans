@@ -1,0 +1,89 @@
+.stage-bar {
+    -fx-background-color: #ff902e;
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
+}
+.stage-bar Text {
+    -fx-font-size: 16px;
+    -fx-fill: #1c0100;
+}
+Button.stage-button {
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
+    -fx-min-width: 60px;
+    -fx-max-width: 60px;
+
+    -fx-background-size: 25px;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-padding: 5px;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+}
+Button.stage-button.minimize {
+    -fx-background-image: url('Minimize.png');
+}
+Button.stage-button.close {
+    -fx-background-image: url('Close.png');
+}
+Button.stage-button:hover {
+    -fx-background-color: #ff5f00;
+}
+
+AnchorPane.parent,
+GridPane.parent {
+    -fx-background-color: #181a1b;
+    -fx-padding: 0;
+    -fx-max-width: 100%;
+    -fx-max-height: 100%;
+}
+
+GridPane Line {
+    /*-fx-stroke: red;*/
+}
+VBox,
+HBox {
+    /*-fx-border-color: pink;*/
+}
+
+Button {
+    -fx-padding: 10px;
+    -fx-background-color: #ff902e;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 0;
+
+    -fx-font-scale: 2;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1c0100;
+}
+Button.picker {
+    -fx-padding: 5px 10px 5px 10px;
+    -fx-background-radius: 20px;
+}
+Button.disabled {
+    -fx-background-color: #357a65;
+}
+
+.tooltip {
+    -fx-background-color: #E673CF;
+}
+
+.check-box {
+    -fx-text-fill: white;
+}
+.check-box .box {
+    -fx-background-color: black;
+}
+
+TextField {
+    -fx-background-color: #2e3434;
+    -fx-text-fill: white;
+}
+
+Text {
+    -fx-fill: white;
+}
+
+.progress-bar .track {
+    -fx-background-color: #2e3434;
+}

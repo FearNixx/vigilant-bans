@@ -31,6 +31,9 @@ public class InstallerFX implements ShutdownListener, HostServicesAware {
     @FXML
     private ProgressBar progress;
 
+    @FXML
+    private Text progressText;
+
     private final AtomicBoolean started = new AtomicBoolean();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final List<Runnable> onDoneListeners = new LinkedList<>();
@@ -60,6 +63,7 @@ public class InstallerFX implements ShutdownListener, HostServicesAware {
         startInstallerBtn.setDisable(true);
         progress.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
         progress.setVisible(true);
+        progressText.setVisible(true);
         addStep("Starting installation in background.");
         final var worker = new InstallerWorker();
         worker.onStep(txt -> Platform.runLater(() -> addStep(txt)));

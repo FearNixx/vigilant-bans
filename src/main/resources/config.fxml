@@ -4,98 +4,93 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="de.fearnixx.lolbanpick.config.ConfigFX"
-            prefHeight="400.0" prefWidth="600.0"
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="de.fearnixx.lolbanpick.config.ConfigFX"
+          maxWidth="600"
+          styleClass="parent"
 >
-    <VBox AnchorPane.topAnchor="0.0">
-        <HBox>
-            <CheckBox fx:id="cbScoreEnabled" text="Enable Scores"/>
-            <CheckBox fx:id="cbSpellsEnabled" text="Enable Spells"/>
-            <CheckBox fx:id="cbCoachesEnabled" text="Enable Coaches"/>
+    <fx:include source="stageHeader.fxml" />
+    <HBox GridPane.columnIndex="0" GridPane.columnSpan="2"
+          GridPane.rowIndex="1"
+          spacing="10"
+    >
+        <padding>
+            <Insets topRightBottomLeft="5"/>
+        </padding>
+        <CheckBox fx:id="cbScoreEnabled" text="Enable Scores"/>
+        <CheckBox fx:id="cbSpellsEnabled" text="Enable Spells"/>
+        <CheckBox fx:id="cbCoachesEnabled" text="Enable Coaches"/>
+    </HBox>
+    <VBox GridPane.columnIndex="0"
+          GridPane.rowIndex="2"
+          GridPane.hgrow="SOMETIMES"
+          styleClass="teamConfig, blueTeam"
+          spacing="3"
+    >
+        <padding>
+            <Insets topRightBottomLeft="5"/>
+        </padding>
+        <TextField text="Score" fx:id="blueScore" />
+        <TextField text="Team Name" fx:id="blueName" />
+        <TextField text="Coach Name" fx:id="blueCoach"/>
+        <HBox spacing="3">
+            <TextField text="R" fx:id="blueRGB1" disable="true" />
+            <TextField text="G" fx:id="blueRGB2" disable="true" />
+            <TextField text="B" fx:id="blueRGB3" disable="true" />
         </HBox>
-        <HBox>
-            <GridPane styleClass="teamConfig, blueTeam">
-                <padding>
-                    <Insets top="5" right="5" bottom="5" left="5"/>
-                </padding>
-                <TextField text="Score"
-                           fx:id="blueScore"
-                           GridPane.columnIndex="0" GridPane.columnSpan="1"
-                           GridPane.rowIndex="0"
-                />
-                <TextField text="Team Name"
-                           fx:id="blueName"
-                           GridPane.columnIndex="0" GridPane.columnSpan="3"
-                           GridPane.rowIndex="1"
-                />
-                <TextField text="Coach Name"
-                           fx:id="blueCoach"
-                           GridPane.columnIndex="0" GridPane.columnSpan="3"
-                           GridPane.rowIndex="2"
-                />
-                <TextField text="R" fx:id="blueRGB1"
-                           GridPane.columnIndex="0" GridPane.columnSpan="1"
-                           GridPane.rowIndex="3"
-                />
-                <TextField text="G" fx:id="blueRGB2"
-                           GridPane.columnIndex="1" GridPane.columnSpan="1"
-                           GridPane.rowIndex="3"
-                />
-                <TextField text="B" fx:id="blueRGB3"
-                           GridPane.columnIndex="2" GridPane.columnSpan="1"
-                           GridPane.rowIndex="3"
-                />
-            </GridPane>
-            <GridPane styleClass="teamConfig, redTeam" alignment="center">
-                <padding>
-                    <Insets top="5" right="5" bottom="5" left="5"/>
-                </padding>
-                <TextField text="Score"
-                           fx:id="redScore"
-                           GridPane.columnIndex="0" GridPane.columnSpan="1"
-                           GridPane.rowIndex="0"
-                />
-                <TextField text="Team Name"
-                           fx:id="redName"
-                           GridPane.columnIndex="0" GridPane.columnSpan="3"
-                           GridPane.rowIndex="1"
-                />
-                <TextField text="Coach Name"
-                           fx:id="redCoach"
-                           GridPane.columnIndex="0" GridPane.columnSpan="3"
-                           GridPane.rowIndex="2"
-                />
-                <TextField text="R" fx:id="redRGB1"
-                           GridPane.columnIndex="0" GridPane.columnSpan="1"
-                           GridPane.rowIndex="3"
-                />
-                <TextField text="G" fx:id="redRGB2"
-                           GridPane.columnIndex="1" GridPane.columnSpan="1"
-                           GridPane.rowIndex="3"
-                />
-                <TextField text="B" fx:id="redRGB3"
-                           GridPane.columnIndex="2" GridPane.columnSpan="1"
-                           GridPane.rowIndex="3"
-                />
-            </GridPane>
+    </VBox>
+    <VBox GridPane.columnIndex="1"
+          GridPane.rowIndex="2"
+          GridPane.hgrow="SOMETIMES"
+          styleClass="teamConfig, redTeam"
+          spacing="3"
+    >
+        <padding>
+            <Insets top="5" right="5" bottom="5" left="5"/>
+        </padding>
+        <TextField text="Score" fx:id="redScore" />
+        <TextField text="Team Name" fx:id="redName" />
+        <TextField text="Coach Name" fx:id="redCoach" />
+        <HBox spacing="3">
+            <TextField text="R" fx:id="redRGB1" disable="true" />
+            <TextField text="G" fx:id="redRGB2" disable="true" />
+            <TextField text="B" fx:id="redRGB3" disable="true" />
         </HBox>
-        <TextField disable="true" fx:id="logoPath" />
-        <Button text="Choose logo"
+    </VBox>
+    <HBox GridPane.columnIndex="0" GridPane.columnSpan="2"
+          GridPane.rowIndex="3"
+          spacing="5"
+          alignment="CENTER_LEFT"
+    >
+        <padding>
+            <Insets top="20" right="5" bottom="10" left="5" />
+        </padding>
+        <Button text="Choose logo" styleClass="picker"
                 fx:id="logoChooseBtn"
                 onAction="#openLogoChooser"
         >
             <tooltip>
-                <Tooltip text="Logo cannot be changed when the UI is running." />
+                <Tooltip text="Logo cannot be changed when the UI is running."/>
             </tooltip>
         </Button>
+        <TextField HBox.hgrow="ALWAYS"
+                   disable="true" fx:id="logoPath"
+        />
+    </HBox>
+    <HBox GridPane.columnIndex="0" GridPane.columnSpan="2"
+          GridPane.rowIndex="4"
+    >
+        <padding>
+            <Insets topRightBottomLeft="5"/>
+        </padding>
         <Button text="Save &amp; Close"
                 fx:id="saveAndCloseBtn"
                 onAction="#saveAndClose"
         />
-    </VBox>
+    </HBox>
     <stylesheets>
+        <URL value="@master.css"/>
         <URL value="@config.css"/>
     </stylesheets>
-</AnchorPane>
+</GridPane>

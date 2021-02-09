@@ -1,65 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.text.TextFlow?>
-<?import javafx.scene.control.ProgressBar?>
-<?import java.net.URL?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.control.Hyperlink?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.URL?>
 <GridPane xmlns:fx="javafx:com.sun.javafx.tools.ant"
           fx:controller="de.fearnixx.lolbanpick.installer.InstallerFX"
-          styleClass="installer"
+          styleClass="parent"
 >
-    <TextFlow styleClass="installer-hello"
-              GridPane.columnIndex="0" GridPane.columnSpan="1"
-              GridPane.rowIndex="0"
+    <padding>
+        <Insets topRightBottomLeft="20"/>
+    </padding>
+    <fx:include source="stageHeader.fxml" />
+    <VBox GridPane.columnIndex="0"
+          GridPane.rowIndex="1"
+          styleClass="installer-hello"
     >
+        <padding>
+            <Insets topRightBottomLeft="3"/>
+        </padding>
         <Text>This application will help you install the ban-pick-ui.</Text>
         <Text>We will install a local NodeJS and the application from the volunteers.</Text>
-    </TextFlow>
-    <AnchorPane GridPane.columnIndex="1" GridPane.columnSpan="1"
-                GridPane.rowIndex="0" GridPane.rowSpan="1"
+    </VBox>
+    <HBox GridPane.columnIndex="1"
+          GridPane.rowIndex="1"
+          alignment="CENTER"
     >
         <Button fx:id="startInstallerBtn" text="Start Installation"
                 onAction="#startInstaller"
-                AnchorPane.bottomAnchor="0.0"
         />
-    </AnchorPane>
-    <ProgressBar fx:id="progress" visible="false"
-                 maxWidth="Infinity"
-                 GridPane.columnIndex="0" GridPane.columnSpan="1"
-                 GridPane.rowIndex="1"
-    />
-    <VBox fx:id="stepsContainer" styleClass="installer-steps"
-          GridPane.columnIndex="0" GridPane.columnSpan="1"
-          GridPane.rowIndex="2" GridPane.rowSpan="3"
-    />
-    <VBox styleClass="logo"
-          GridPane.columnIndex="1" GridPane.columnSpan="1"
-          GridPane.rowIndex="3" GridPane.rowSpan="1"
+    </HBox>
+    <VBox GridPane.columnIndex="0"
+          GridPane.rowIndex="2"
+          spacing="3"
+    >
+        <padding>
+            <Insets top="20" right="10" left="5" />
+        </padding>
+        <ProgressBar fx:id="progress" visible="false"
+                     maxWidth="Infinity"
+        />
+        <Text fx:id="progressText" visible="false">Feel free to do something else in the mean time. We will open the application for you, afterwards.</Text>
+    </VBox>
+    <VBox GridPane.columnIndex="1"
+          GridPane.rowIndex="2"
+          GridPane.hgrow="ALWAYS"
+          alignment="CENTER"
     >
         <ImageView>
             <Image url="Fearnixx UG112x112.png"/>
         </ImageView>
+
+        <TextFlow>
+            <Text>GitHub:</Text>
+            <Hyperlink text="vigilant-bans" onAction="#openSocialGitHub"/>
+        </TextFlow>
+        <TextFlow>
+            <Text>Twitter</Text>
+            <Hyperlink text="\@FearNixxGaming" onAction="#openSocialTwitter"/>
+        </TextFlow>
     </VBox>
-    <TextFlow GridPane.columnIndex="1" GridPane.columnSpan="1"
-              GridPane.rowIndex="4" GridPane.rowSpan="1"
-    >
-        <Text>GitHub:</Text>
-        <Hyperlink text="vigilant-bans" onAction="#openSocialGitHub" />
-    </TextFlow>
-    <TextFlow GridPane.columnIndex="1" GridPane.columnSpan="1"
-              GridPane.rowIndex="5" GridPane.rowSpan="1"
-    >
-        <Text>Twitter</Text>
-        <Hyperlink text="\@FearNixxGaming" onAction="#openSocialTwitter" />
-    </TextFlow>
+    <VBox fx:id="stepsContainer"
+          GridPane.columnIndex="0"
+          GridPane.rowIndex="3"
+          GridPane.hgrow="ALWAYS"
+    />
     <stylesheets>
         <URL value="@installer.css"/>
+        <URL value="@master.css"/>
     </stylesheets>
 </GridPane>

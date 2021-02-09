@@ -16,7 +16,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +46,7 @@ public class RunnerFX implements ShutdownListener, Initializable, HostServicesAw
     private final AtomicReference<Runnable> installerRequest = new AtomicReference<>();
 
     @FXML
-    private AnchorPane main;
+    private GridPane main;
 
     @FXML
     private Button lcuBrokerStart;
@@ -175,6 +177,8 @@ public class RunnerFX implements ShutdownListener, Initializable, HostServicesAw
                     this.configController.set(null);
                     configOpen.setDisable(false);
                 });
+                stage.setResizable(false);
+                stage.initStyle(StageStyle.UNDECORATED);
                 stage.show();
 
                 this.configController.set(configFXMLLoader.getController());

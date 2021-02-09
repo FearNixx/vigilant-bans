@@ -1,13 +1,3 @@
-.installer {
-    -fx-padding: 20;
-}
-
-.installer-hello {
-    -fx-font: 20px "Serif";
-}
-
-.installer-steps {
-}
-
-.logo {
+.installer-hello Text {
+    -fx-font-size: 20px;
 }

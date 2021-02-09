@@ -3,29 +3,48 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="de.fearnixx.lolbanpick.runner.RunnerFX"
-            prefHeight="400.0" prefWidth="600.0"
-            fx:id="main"
+<?import javafx.geometry.Insets?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="de.fearnixx.lolbanpick.runner.RunnerFX"
+          prefWidth="400"
+          fx:id="main"
+          styleClass="parent"
 >
-    <VBox styleClass="col" AnchorPane.leftAnchor="0.0">
-        <Button text="Start LCU-Connector" styleClass="btn"
+    <fx:include source="stageHeader.fxml" />
+    <VBox GridPane.columnIndex="0"
+          GridPane.rowIndex="1"
+          GridPane.hgrow="SOMETIMES"
+          alignment="TOP_CENTER"
+          spacing="3"
+    >
+        <padding>
+            <Insets top="10" />
+        </padding>
+        <Button text="Start LCU-Connector"
                 fx:id="lcuBrokerStart"
                 onAction="#runLCUBroker"
         />
-        <Button text="Stop LCU-Connector" styleClass="btn"
+        <Button text="Stop LCU-Connector"
                 fx:id="lcuBrokerStop"
                 onAction="#stopLCUBroker"
                 visible="false"
         />
     </VBox>
-    <VBox styleClass="col" AnchorPane.rightAnchor="0.0">
-        <Button text="Start EU-Layout" styleClass="btn"
+    <VBox GridPane.columnIndex="1"
+          GridPane.rowIndex="1"
+          GridPane.hgrow="SOMETIMES"
+          alignment="TOP_CENTER"
+          spacing="3"
+    >
+        <padding>
+            <Insets top="10" />
+        </padding>
+        <Button text="Start EU-Layout"
                 fx:id="layoutServerStart"
                 onAction="#runEULayoutServer"
         />
-        <Button text="Stop EU-Layout" styleClass="btn"
+        <Button text="Stop EU-Layout"
                 fx:id="layoutServerStop"
                 onAction="#stopEULayoutServer"
                 visible="false"
@@ -37,17 +56,29 @@
         />
     </VBox>
 
-    <HBox AnchorPane.bottomAnchor="0.0">
-        <Button text="Reopen installer"
-                fx:id="resetCacheBtn"
-                onAction="#openInstaller"
-        />
+    <HBox GridPane.columnIndex="0"
+          GridPane.rowIndex="2"
+          alignment="CENTER_LEFT"
+    >
         <Button text="Config"
                 fx:id="configOpen"
                 onAction="#openConfig"
         />
     </HBox>
+    <HBox GridPane.columnIndex="1"
+          GridPane.rowIndex="2"
+          alignment="CENTER_RIGHT"
+    >
+        <Button text="Reinstall"
+                fx:id="resetCacheBtn"
+                onAction="#openInstaller"
+        >
+            <tooltip>
+                <Tooltip text="Services need to be stopped first." />
+            </tooltip>
+        </Button>
+    </HBox>
     <stylesheets>
-        <URL value="@runner.css"/>
+        <URL value="@master.css"/>
     </stylesheets>
-</AnchorPane>
+</GridPane>

@@ -143,7 +143,7 @@ public class InstallerWorker implements Runnable {
         Process proc = null;
         try {
             // === BEGIN LCU Broker dependencies ===
-            echoStep("Install JS dependencies (LCU-Broker).");
+            echoStep("Installing JS dependencies (LCU-Broker).");
             final var processBuilder = new ProcessBuilder()
                     .command(Constants.NPM_EXECUTABLE.toPath().toString(), "install")
                     .directory(Constants.PICKBAN_DIR)
@@ -165,7 +165,7 @@ public class InstallerWorker implements Runnable {
 
         try {
             // === BEGIN layout dependencies ===
-            echoStep("Install JS dependencies (EU-Layout).");
+            echoStep("Installing JS dependencies (EU-Layout).");
             final var processBuilder = new ProcessBuilder()
                     .command(Constants.NPM_EXECUTABLE.toPath().toString(), "install")
                     .directory(Constants.PICKBAN_EULAYOUT_DIR)
