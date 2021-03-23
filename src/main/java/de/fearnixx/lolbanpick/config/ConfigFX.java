@@ -68,6 +68,9 @@ public class ConfigFX implements ShutdownListener, Initializable {
     private ColorPicker redColorPicker;
 
     @FXML
+    private CheckBox cbSwapColors;
+
+    @FXML
     private TextField logoPath;
 
     @FXML
@@ -86,6 +89,7 @@ public class ConfigFX implements ShutdownListener, Initializable {
         logoChooser.getExtensionFilters().add(extFilter);
         logoChooser.setSelectedExtensionFilter(extFilter);
         logoChooser.setTitle("Choose logo.");
+        cbSwapColors.setSelected(true);
 
         logger.info("Attempting to read current configuration.");
         try (var reader = new FileReader(new File(Constants.PICKBAN_DIR, CONFIG_FILE_NAME))) {
@@ -200,6 +204,26 @@ public class ConfigFX implements ShutdownListener, Initializable {
             logger.debug("Not setting logo as it was not allowed.");
         }
         return true;
+    }
+
+    public void sideSwap() {
+        final var tempBlueName = blueName.getText();
+        final var tempBlueScore = blueScore.getText();
+        final var tempBlueCoach = blueCoach.getText();
+        final var tempBlueColor = blueColorPicker.getValue();
+
+        blueName.setText(redName.getText());
+        blueScore.setText(redScore.getText());
+        blueCoach.setText(redCoach.getText());
+
+        redName.setText(tempBlueName);
+        redScore.setText(tempBlueScore);
+        redCoach.setText(tempBlueCoach);
+
+        if (cbSwapColors.isSelected()) {
+            blueColorPicker.setValue(redColorPicker.getValue());
+            redColorPicker.setValue(tempBlueColor);
+        }
     }
 
     public void openLogoChooser() {

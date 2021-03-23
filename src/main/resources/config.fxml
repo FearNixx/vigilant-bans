@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
@@ -10,7 +10,7 @@
           maxWidth="600"
           styleClass="parent"
 >
-    <fx:include source="stageHeader.fxml" />
+    <fx:include source="stageHeader.fxml"/>
     <HBox GridPane.columnIndex="0" GridPane.columnSpan="2"
           GridPane.rowIndex="1"
           spacing="10"
@@ -31,10 +31,10 @@
         <padding>
             <Insets topRightBottomLeft="5"/>
         </padding>
-        <TextField text="Score" fx:id="blueScore" />
-        <TextField text="Team Name" fx:id="blueName" />
+        <TextField text="Score" fx:id="blueScore"/>
+        <TextField text="Team Name" fx:id="blueName"/>
         <TextField text="Coach Name" fx:id="blueCoach"/>
-        <ColorPicker fx:id="blueColorPicker" />
+        <ColorPicker fx:id="blueColorPicker"/>
     </VBox>
     <VBox GridPane.columnIndex="1"
           GridPane.rowIndex="2"
@@ -43,20 +43,35 @@
           spacing="3"
     >
         <padding>
-            <Insets top="5" right="5" bottom="5" left="5"/>
+            <Insets topRightBottomLeft="5"/>
         </padding>
-        <TextField text="Score" fx:id="redScore" />
-        <TextField text="Team Name" fx:id="redName" />
-        <TextField text="Coach Name" fx:id="redCoach" />
-        <ColorPicker fx:id="redColorPicker" />
+        <TextField text="Score" fx:id="redScore"/>
+        <TextField text="Team Name" fx:id="redName"/>
+        <TextField text="Coach Name" fx:id="redCoach"/>
+        <ColorPicker fx:id="redColorPicker"/>
     </VBox>
     <HBox GridPane.columnIndex="0" GridPane.columnSpan="2"
           GridPane.rowIndex="3"
+          spacing="3"
+          alignment="CENTER_LEFT"
+    >
+        <padding>
+            <Insets left="10" top="5" bottom="5"/>
+        </padding>
+        <Button styleClass="swap-button" onAction="#sideSwap">
+            <tooltip>
+                <Tooltip text="Swap teams"/>
+            </tooltip>
+        </Button>
+        <CheckBox fx:id="cbSwapColors">Include colors</CheckBox>
+    </HBox>
+    <HBox GridPane.columnIndex="0" GridPane.columnSpan="2"
+          GridPane.rowIndex="4"
           spacing="5"
           alignment="CENTER_LEFT"
     >
         <padding>
-            <Insets top="20" right="5" bottom="10" left="5" />
+            <Insets top="20" right="5" bottom="10" left="5"/>
         </padding>
         <Button text="Choose logo" styleClass="picker"
                 fx:id="logoChooseBtn"
@@ -71,7 +86,7 @@
         />
     </HBox>
     <HBox GridPane.columnIndex="0" GridPane.columnSpan="2"
-          GridPane.rowIndex="4"
+          GridPane.rowIndex="5"
     >
         <padding>
             <Insets topRightBottomLeft="5"/>

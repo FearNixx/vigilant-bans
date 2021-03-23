@@ -9,3 +9,17 @@
 .teamConfig.redTeam {
     -fx-border-color: red;
 }
+Button.swap-button {
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
+    -fx-min-width: 60px;
+    -fx-max-width: 60px;
+
+    -fx-background-size: 25px;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-padding: 5px;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-image: url('Swap.png');
+}
