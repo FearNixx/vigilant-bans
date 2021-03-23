@@ -42,7 +42,6 @@ public class InstallerWorker implements Runnable {
                 () -> downloadNodeJS().ifPresent(this::extractNodeJS),
 //                () -> downloadGitWin().ifPresent(this::extractGitWin),
                 () -> downloadRepository().ifPresent(this::extractRepository),
-                this::applyTypesFSWorkaround,
                 this::installNodeDependencies,
                 this::notifyDone
         );
@@ -140,32 +139,6 @@ public class InstallerWorker implements Runnable {
             logger.error("Error extracting Git archive!", e);
             echoStep(String.format("Failed to extract Git archive. (Msg: %s)", e.getLocalizedMessage()));
             Thread.currentThread().interrupt();
-        }
-    }
-
-    private void applyTypesFSWorkaround() {
-        echoStep("Applying @types/fs-extra work-around.");
-        // @types/fs-extra breaks compilation in releases following 9.0.1.
-        // We need to pin the version in order for the compilation to succeed.
-        Process proc = null;
-        try {
-            final var processBuilder = new ProcessBuilder()
-                    .command(Constants.NPM_EXECUTABLE.toPath().toString(), "install", "--save-exact", "@types/fs-extra@9.0.0")
-                    .directory(Constants.PICKBAN_DIR)
-                    .inheritIO();
-            processBuilder.environment().put(Constants.OS_PATH_ENV, String.format("\"%s\"%s%s", Constants.NODE_DIR, File.pathSeparator, System.getenv(Constants.OS_PATH_ENV)));
-            proc = processBuilder.start();
-            proc.waitFor();
-        } catch (IOException e) {
-            logger.error("Error installing JS dependencies for LCU-Broker!", e);
-            echoStep(String.format("Failed to install LCU-Broker dependencies! (Msg: %s)", e.getLocalizedMessage()));
-            Thread.currentThread().interrupt();
-            return;
-        } catch (InterruptedException e) {
-            logger.warn("NPM Install interrupted!");
-            proc.destroy();
-            Thread.currentThread().interrupt();
-            return;
         }
     }
 
