@@ -15,7 +15,7 @@ javafx {
     modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
-mainClassName = "de.fearnixx.lolbanpick.ManagerFX"
+mainClassName = 'vigilantbans.ui/de.fearnixx.lolbanpick.ManagerFX'
 
 dependencies {
     implementation 'org.openjfx:javafx-controls:11.0.2'

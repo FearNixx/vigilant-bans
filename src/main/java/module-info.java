@@ -1,4 +1,4 @@
-module lolbanpick.ui {
+module vigilantbans.ui {
     requires javafx.controls;
     requires javafx.fxml;
     requires org.slf4j;

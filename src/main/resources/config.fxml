@@ -34,11 +34,7 @@
         <TextField text="Score" fx:id="blueScore" />
         <TextField text="Team Name" fx:id="blueName" />
         <TextField text="Coach Name" fx:id="blueCoach"/>
-        <HBox spacing="3">
-            <TextField text="R" fx:id="blueRGB1" disable="true" />
-            <TextField text="G" fx:id="blueRGB2" disable="true" />
-            <TextField text="B" fx:id="blueRGB3" disable="true" />
-        </HBox>
+        <ColorPicker fx:id="blueColorPicker" />
     </VBox>
     <VBox GridPane.columnIndex="1"
           GridPane.rowIndex="2"
@@ -52,11 +48,7 @@
         <TextField text="Score" fx:id="redScore" />
         <TextField text="Team Name" fx:id="redName" />
         <TextField text="Coach Name" fx:id="redCoach" />
-        <HBox spacing="3">
-            <TextField text="R" fx:id="redRGB1" disable="true" />
-            <TextField text="G" fx:id="redRGB2" disable="true" />
-            <TextField text="B" fx:id="redRGB3" disable="true" />
-        </HBox>
+        <ColorPicker fx:id="redColorPicker" />
     </VBox>
     <HBox GridPane.columnIndex="0" GridPane.columnSpan="2"
           GridPane.rowIndex="3"

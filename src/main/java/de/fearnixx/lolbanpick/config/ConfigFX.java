@@ -9,7 +9,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -19,9 +21,9 @@ import java.io.*;
 import java.net.URL;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Function;
+import java.util.regex.Pattern;
 
 public class ConfigFX implements ShutdownListener, Initializable {
 
@@ -30,6 +32,7 @@ public class ConfigFX implements ShutdownListener, Initializable {
     private static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .create();
+    private static final Pattern colorPattern = Pattern.compile("^rgb\\( *(\\d{1,3}) *, *(\\d{1,3}) *, *(\\d{1,3}) *\\)$");
 
     @FXML
     private CheckBox cbScoreEnabled;
@@ -50,13 +53,7 @@ public class ConfigFX implements ShutdownListener, Initializable {
     private TextField blueCoach;
 
     @FXML
-    private TextField blueRGB1;
-
-    @FXML
-    private TextField blueRGB2;
-
-    @FXML
-    private TextField blueRGB3;
+    private ColorPicker blueColorPicker;
 
     @FXML
     private TextField redScore;
@@ -68,20 +65,15 @@ public class ConfigFX implements ShutdownListener, Initializable {
     private TextField redCoach;
 
     @FXML
-    private TextField redRGB1;
-
-    @FXML
-    private TextField redRGB2;
-
-    @FXML
-    private TextField redRGB3;
+    private ColorPicker redColorPicker;
 
     @FXML
     private TextField logoPath;
 
     @FXML
     private Button logoChooseBtn;
-    private FileChooser logoChooser = new FileChooser();
+
+    private final FileChooser logoChooser = new FileChooser();
 
     @FXML
     private Button saveAndCloseBtn;
@@ -108,16 +100,42 @@ public class ConfigFX implements ShutdownListener, Initializable {
             blueScore.setText(Integer.toString(teamBlue.get(ConfigKeys.TEAM_SCORE).getAsInt()));
             blueName.setText(teamBlue.get(ConfigKeys.TEAM_NAME).getAsString());
             blueCoach.setText(teamBlue.get(ConfigKeys.TEAM_COACH).getAsString());
+            blueColorPicker.setValue(parseColor(teamBlue.get(ConfigKeys.TEAM_COLOR).getAsString()));
 
             final var teamRed = frontendSettings.get(ConfigKeys.TEAM_RED).getAsJsonObject();
             redScore.setText(Integer.toString(teamRed.get(ConfigKeys.TEAM_SCORE).getAsInt()));
             redName.setText(teamRed.get(ConfigKeys.TEAM_NAME).getAsString());
             redCoach.setText(teamRed.get(ConfigKeys.TEAM_COACH).getAsString());
-
+            redColorPicker.setValue(parseColor(teamRed.get(ConfigKeys.TEAM_COLOR).getAsString()));
         } catch (IOException e) {
             logger.error("Error loading configuration!", e);
             throw new RuntimeException(e);
         }
+    }
+
+    private Color parseColor(String colorStr) {
+        final var matcher = colorPattern.matcher(colorStr);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("Invalid RGB-Color: " + colorStr);
+        }
+
+        try {
+            var redValue = Integer.parseInt(matcher.group(1));
+            var greenValue = Integer.parseInt(matcher.group(2));
+            var blueValue = Integer.parseInt(matcher.group(3));
+            return Color.rgb(redValue, greenValue, blueValue);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Failed to parse double from rgb part of: " + colorStr);
+        }
+    }
+
+    private String serializeColor(Color color) {
+        Function<Double, Integer> rgbIze = d -> Math.toIntExact(Math.round(d * 255));
+        return String.format("rgb(%s,%s,%s)",
+                rgbIze.apply(color.getRed()),
+                rgbIze.apply(color.getGreen()),
+                rgbIze.apply(color.getBlue())
+        );
     }
 
     @Override
@@ -151,11 +169,13 @@ public class ConfigFX implements ShutdownListener, Initializable {
             teamBlue.addProperty(ConfigKeys.TEAM_SCORE, Integer.parseInt(blueScore.getText()));
             teamBlue.addProperty(ConfigKeys.TEAM_NAME, blueName.getText());
             teamBlue.addProperty(ConfigKeys.TEAM_COACH, blueCoach.getText());
+            teamBlue.addProperty(ConfigKeys.TEAM_COLOR, serializeColor(blueColorPicker.getValue()));
 
             final var teamRed = frontendConfig.getAsJsonObject(ConfigKeys.TEAM_RED);
             teamRed.addProperty(ConfigKeys.TEAM_SCORE, Integer.parseInt(redScore.getText()));
             teamRed.addProperty(ConfigKeys.TEAM_NAME, redName.getText());
             teamRed.addProperty(ConfigKeys.TEAM_COACH, redCoach.getText());
+            teamRed.addProperty(ConfigKeys.TEAM_COLOR, serializeColor(redColorPicker.getValue()));
 
             GSON.toJson(settings, writer);
         } catch (IOException e) {
