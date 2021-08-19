@@ -20,8 +20,9 @@ public class Constants {
     public static final File GITWIN_DIR = new File(appsDir, "git-for-windows");
 
     public static final String PICKBAN_ARCHIVE = "https://github.com/RCVolus/lol-pick-ban-ui/archive/master.zip";
-    public static final File PICKBAN_DIR = new File(appsDir, "lol-pick-ban-ui-master");
-    public static final File PICKBAN_EULAYOUT_DIR = new File(PICKBAN_DIR, "layouts/layout-volu-europe");
+    public static final File REPO_DIR = new File(appsDir, "lol-pick-ban-ui-master");
+    public static final File PICKBAN_DIR = new File(REPO_DIR, "backend");
+    public static final File PICKBAN_EULAYOUT_DIR = new File(REPO_DIR, "layouts/layout-volu-europe");
 
     public static final String SOCIAL_TWITTER = "https://twitter.com/fearnixxgaming";
     public static final String SOCIAL_GITHUB = "https://github.com/fearnixx/vigilant-bans";
