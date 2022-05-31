@@ -15,15 +15,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class ManagerFX extends Application {
 
     public static final String APP_TITLE_FORMAT = "Vigilant-Bans | %s";
-    private static final String APP_ICON = "/Fearnixx UG112x112.png";
+    private static final String APP_ICON = "/FearNixx_UG112x112.png";
     private static final Logger logger = LoggerFactory.getLogger(ManagerFX.class);
 
     private static final List<ShutdownListener> shutdownListeners = new LinkedList<>();
@@ -38,12 +40,16 @@ public class ManagerFX extends Application {
 
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.resizableProperty().set(false);
-        primaryStage.getIcons().setAll(new Image(getClass().getResourceAsStream(APP_ICON)));
+        getAppIcon().map(Image::new).ifPresent(primaryStage.getIcons()::setAll);
         if (shouldStartInstaller()) {
             openInstaller(primaryStage);
         } else {
             openRunner(primaryStage);
         }
+    }
+
+    private Optional<InputStream> getAppIcon() {
+        return Optional.ofNullable(getClass().getResourceAsStream(APP_ICON));
     }
 
     private boolean shouldStartInstaller() {
@@ -90,11 +96,11 @@ public class ManagerFX extends Application {
     }
 
     private void initController(Object controller) {
-        if (controller instanceof ShutdownListener) {
-            registerShutdownListener(((ShutdownListener) controller));
+        if (controller instanceof ShutdownListener sl) {
+            registerShutdownListener(sl);
         }
-        if (controller instanceof HostServicesAware) {
-            ((HostServicesAware) controller).setHostServices(getHostServices());
+        if (controller instanceof HostServicesAware hsa) {
+            hsa.setHostServices(getHostServices());
         }
     }
 
