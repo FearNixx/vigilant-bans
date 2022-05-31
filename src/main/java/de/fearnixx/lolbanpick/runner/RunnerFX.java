@@ -15,7 +15,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -79,7 +78,7 @@ public class RunnerFX implements ShutdownListener, Initializable, HostServicesAw
         lcuBroker.setWorkingDirectory(Constants.PICKBAN_DIR.toPath());
         lcuBroker.onDone(() -> Platform.runLater(this::onLCUBrokerDone));
         layoutServer.setWorkingDirectory(Constants.PICKBAN_EULAYOUT_DIR.toPath());
-        layoutServer.env("NOOPEN", "true");
+        layoutServer.env("BROWSER", "none");
         layoutServer.onDone(() -> Platform.runLater(this::onEULayoutServerDone));
     }
 
