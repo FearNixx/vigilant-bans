@@ -206,6 +206,6 @@ public class InstallerWorker implements Runnable {
                 .collect(Collectors.toSet());
         return directories.stream().anyMatch(f -> f.getName().contains(Constants.NODE_DIR.getName()))
 //                && directories.stream().anyMatch(f -> f.getName().contains(Constants.GITWIN_DIR.getName()))
-                && directories.stream().anyMatch(f -> f.getName().contains(Constants.PICKBAN_DIR.getName()));
+                && directories.stream().anyMatch(f -> f.getName().contains(Constants.REPO_DIR.getName()));
     }
 }

@@ -15,8 +15,8 @@ public class StageFX {
     @FXML
     private Button closeBtn;
 
-    private AtomicReference<Double> xOffset = new AtomicReference<>();
-    private AtomicReference<Double> yOffset = new AtomicReference<>();
+    private final AtomicReference<Double> xOffset = new AtomicReference<>();
+    private final AtomicReference<Double> yOffset = new AtomicReference<>();
 
     protected Stage getStage() {
         return ((Stage) minimizeBtn.getScene().getWindow());
