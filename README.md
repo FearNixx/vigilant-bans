@@ -3,7 +3,7 @@ JavaFX application that manages installation of the [RCVolus/lol-pick-ban-ui](ht
 project and allows some basic configuration.  
 
 ## Requirements
-* Java 11+ (e.g. from [Eclipse Adoptium](https://adoptium.net/temurin/releases/?version=11))
+* Java 17 (e.g. from [Eclipse Adoptium](https://adoptium.net/temurin/releases/?version=17))
 * Windows 10 or Windows 11 (3rd party requirement as the installed tool depends on the local League of Legends client.)
 
 ## Set-Up / Usage
