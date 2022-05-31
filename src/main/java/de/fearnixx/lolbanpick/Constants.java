@@ -9,9 +9,9 @@ public class Constants {
     public static final String OS_PATH_ENV = "PATH";
     public static final File appsDir = new File("./cache").getAbsoluteFile();
 
-    public static final String NODE_URI = "https://nodejs.org/dist/v14.15.1/node-v14.15.1-win-x64.zip";
-    public static final String NODE_VERSION = "14.15.1";
-    public static final File NODE_DIR = new File(appsDir, "node-v14.15.1-win-x64");
+    public static final String NODE_URI = "https://nodejs.org/dist/v16.15.0/node-v16.15.0-win-x64.zip";
+    public static final String NODE_VERSION = "16.15.0";
+    public static final File NODE_DIR = new File(appsDir, "node-v16.15.0-win-x64");
     public static final File NPM_EXECUTABLE = new File(NODE_DIR, "npm.cmd");
     public static final File NPM_CACHE_DIR = new File(Constants.appsDir, "npm_cache").getAbsoluteFile();
 
