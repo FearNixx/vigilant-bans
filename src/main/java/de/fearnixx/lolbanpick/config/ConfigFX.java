@@ -7,13 +7,11 @@ import de.fearnixx.lolbanpick.Constants;
 import de.fearnixx.lolbanpick.ShutdownListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +20,8 @@ import java.net.URL;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
 import java.util.ResourceBundle;
-import java.util.function.Function;
+import java.util.function.DoubleToIntFunction;
+import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
 public class ConfigFX implements ShutdownListener, Initializable {
@@ -91,6 +90,24 @@ public class ConfigFX implements ShutdownListener, Initializable {
         logoChooser.setTitle("Choose logo.");
         cbSwapColors.setSelected(true);
 
+        UnaryOperator<TextFormatter.Change> isIntFilter = change -> {
+            String nextText = change.getControlNewText();
+            if (nextText.isBlank()) {
+                var clone = change.clone();
+                clone.setText("0");
+                return clone;
+            } else if (!Constants.INTEGER_VAL.matcher(nextText).matches()) {
+                return null;
+            }
+            return change;
+        };
+        blueScore.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), 0, isIntFilter));
+        redScore.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), 0, isIntFilter));
+
+        loadConfiguration();
+    }
+
+    private void loadConfiguration() {
         logger.info("Attempting to read current configuration.");
         try (var reader = new FileReader(new File(Constants.PICKBAN_DIR, CONFIG_FILE_NAME))) {
             final var root = GSON.fromJson(reader, JsonObject.class);
@@ -112,8 +129,7 @@ public class ConfigFX implements ShutdownListener, Initializable {
             redCoach.setText(teamRed.get(ConfigKeys.TEAM_COACH).getAsString());
             redColorPicker.setValue(parseColor(teamRed.get(ConfigKeys.TEAM_COLOR).getAsString()));
         } catch (IOException e) {
-            logger.error("Error loading configuration!", e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("There was an unexpected error while loading the configuration!", e);
         }
     }
 
@@ -134,16 +150,17 @@ public class ConfigFX implements ShutdownListener, Initializable {
     }
 
     private String serializeColor(Color color) {
-        Function<Double, Integer> rgbIze = d -> Math.toIntExact(Math.round(d * 255));
+        DoubleToIntFunction rgbIze = d -> Math.toIntExact(Math.round(d * 255));
         return String.format("rgb(%s,%s,%s)",
-                rgbIze.apply(color.getRed()),
-                rgbIze.apply(color.getGreen()),
-                rgbIze.apply(color.getBlue())
+                rgbIze.applyAsInt(color.getRed()),
+                rgbIze.applyAsInt(color.getGreen()),
+                rgbIze.applyAsInt(color.getBlue())
         );
     }
 
     @Override
     public void onShutdown() {
+        // nothing to do at the moment
     }
 
     public void saveAndClose() {
