@@ -142,6 +142,31 @@ public class InstallerWorker implements Runnable {
         }
     }
 
+    private void activateYarn() {
+        Process proc = null;
+        try {
+            // === BEGIN LCU Broker dependencies ===
+            echoStep("Enabling Yarn for JS dependency management");
+            final var processBuilder = new ProcessBuilder()
+                    .command(Constants.NPM_EXECUTABLE.toPath().toString(), "corepack enable")
+                    .directory(Constants.PICKBAN_DIR)
+                    .inheritIO();
+            processBuilder.environment().put(Constants.OS_PATH_ENV, String.format("\"%s\"%s%s", Constants.NODE_DIR, File.pathSeparator, System.getenv(Constants.OS_PATH_ENV)));
+            proc = processBuilder.start();
+            proc.waitFor();
+        } catch (IOException e) {
+            logger.error("Error enabling corepack!", e);
+            echoStep(String.format("Failed to enable yarn! (Msg: %s)", e.getLocalizedMessage()));
+            Thread.currentThread().interrupt();
+            return;
+        } catch (InterruptedException e) {
+            logger.warn("Corepack enabling interrupted!");
+            proc.destroy();
+            Thread.currentThread().interrupt();
+            return;
+        }
+    }
+
     private void installNodeDependencies() {
         Process proc = null;
         try {
